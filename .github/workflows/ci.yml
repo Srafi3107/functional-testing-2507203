@@ -69,7 +69,7 @@ jobs:
 
       - name: Check Live Health Endpoint & SHA
         run: |
-          LIVE_URL="https://your-app-name.onrender.com"
+          LIVE_URL="https://functional-testing-2507203.onrender.com/"
           
           # Health check and live endpoint checks
           curl -f "$LIVE_URL/" || exit 1
