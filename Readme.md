@@ -4,6 +4,6 @@
 
 ## Setup & Installation
 1. Clone the repository:
-   ```bash
-   git clone [https://github.com/](https://github.com/)<your-github-username>/functional-testing-<student-id>.git
-   cd functional-testing-<student-id>
+
+
+SHA-5893b4a9cdf28f388221f2f593233385ea4a516a
