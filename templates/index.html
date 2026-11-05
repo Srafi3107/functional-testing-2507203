@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Functional Testing Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+    <div class="max-w-4xl mx-auto px-4 py-8 w-full">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-indigo-600">Target.py Function Tester</h1>
+            <p class="text-slate-600 mt-2">Test all 16 functions interactively against the live deployed version.</p>
+        </header>
+
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+            <label for="functionSelect" class="block font-semibold mb-2">Select Function:</label>
+            <select id="functionSelect" class="w-full border border-slate-300 rounded-md p-2 mb-4">
+                <option value="is_adult">1. is_adult (age)</option>
+                <option value="celsius_to_fahrenheit">2. celsius_to_fahrenheit (celsius)</option>
+                <option value="count_vowels">3. count_vowels (text)</option>
+                <option value="invert">4. invert (flag)</option>
+                <option value="greet">5. greet (name)</option>
+                <option value="find_max">6. find_max (numbers list)</option>
+                <option value="get_price">7. get_price (prices dict, item)</option>
+                <option value="swap">8. swap (pair tuple)</option>
+                <option value="common_items">9. common_items (set_a, set_b)</option>
+                <option value="is_leap_year">10. is_leap_year (year)</option>
+                <option value="to_int">11. to_int (value)</option>
+                <option value="divide">12. divide (a, b)</option>
+                <option value="power">13. power (base, exponent)</option>
+                <option value="square_root">14. square_root (x)</option>
+                <option value="factorial">15. factorial (n)</option>
+                <option value="average">16. average (numbers list)</option>
+            </select>
+
+            <label for="inputArg" class="block font-semibold mb-2">Argument (JSON or comma-separated/raw value):</label>
+            <input type="text" id="inputArg" placeholder="e.g. 20 or [1, 2, 3]" class="w-full border border-slate-300 rounded-md p-2 mb-4">
+            
+            <button onclick="executeFunction()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-md transition">Run Function</button>
+
+            <div class="mt-6">
+                <h3 class="font-semibold text-slate-700">Result / Output:</h3>
+                <pre id="outputBox" class="bg-slate-100 p-4 rounded-md mt-2 text-sm overflow-x-auto border border-slate-200">No execution yet.</pre>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-sm text-slate-500">
+        Deployed Commit SHA: <span id="commitSha" class="font-mono font-semibold text-indigo-600">{{ commit_sha }}</span>
+    </footer>
+
+    <script>
+        async function executeFunction() {
+            const funcName = document.getElementById("functionSelect").value;
+            let rawInput = document.getElementById("inputArg").value.trim();
+            let args = [];
+
+            try {
+                if (rawInput !== "") {
+                    // Try parsing JSON, fallback to string/number evaluation
+                    try {
+                        args = JSON.parse(`[${rawInput}]`);
+                    } catch {
+                        args = [rawInput];
+                    }
+                }
+
+                const response = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ function: funcName, args: args })
+                });
+
+                const data = await response.json();
+                const outBox = document.getElementById("outputBox");
+                if (response.ok) {
+                    outBox.className = "bg-emerald-50 text-emerald-800 p-4 rounded-md mt-2 text-sm overflow-x-auto border border-emerald-200";
+                    outBox.textContent = JSON.stringify(data.result, null, 2);
+                } else {
+                    outBox.className = "bg-rose-50 text-rose-800 p-4 rounded-md mt-2 text-sm overflow-x-auto border border-rose-200";
+                    outBox.textContent = `Error: ${data.error}`;
+                }
+            } catch (err) {
+                document.getElementById("outputBox").textContent = `Client Error: ${err.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
