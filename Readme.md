@@ -1,9 +1,21 @@
-# Functional Testing, CI/CD, and Live Deployment
+# Functional Testing & CI/CD Pipeline Assignment
 
-[![CI Status](https://github.com/<your-github-username>/functional-testing-<student-id>/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-github-username>/functional-testing-<student-id>/actions/workflows/ci.yml)
+A robust Python Flask web application featuring strict test-driven development, 100% code coverage enforcement, automated multi-version GitHub Actions CI/CD workflows, secure deployment webhooks, and live health/commit tracking.
 
-## Setup & Installation
-1. Clone the repository:
+---
 
+## Project Structure
 
-SHA-5893b4a9cdf28f388221f2f593233385ea4a516a
+```text
+functional-testing-2507203/
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # GitHub Actions CI/CD pipeline configuration
+├── static/                    # Frontend styling / assets
+├── templates/                 # HTML templates (including live commit SHA footer)
+├── tests/
+│   └── test_target.py         # Pytest test suite ensuring 100% coverage
+├── app.py                     # Flask application with /health and commit tracking
+├── target.py                  # Core logic module under test
+├── requirements.txt           # Project dependencies
+└── README.md                  # Project documentation
