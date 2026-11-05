@@ -5,7 +5,7 @@ import target
 
 app = Flask(__name__)
 
-# Get current git commit SHA
+# Function to get the current Git commit SHA (used for Part 5 requirement)
 def get_commit_sha():
     if os.getenv("RENDER_GIT_COMMIT"):
         return os.getenv("RENDER_GIT_COMMIT")
@@ -20,6 +20,7 @@ def index():
     commit_sha = get_commit_sha()
     return render_template("index.html", commit_sha=commit_sha)
 
+# Health endpoint required for smoke testing (Part 5)
 @app.route("/health")
 def health():
     return jsonify({
@@ -35,7 +36,6 @@ def run_function():
 
     try:
         func = getattr(target, func_name)
-        # Convert argument types as appropriate for python function testing
         result = func(*args)
         return jsonify({"success": True, "result": result})
     except Exception as e:
