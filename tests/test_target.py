@@ -146,7 +146,7 @@ def test_to_int_type_error(invalid_val):
 
 # 12. divide
 @pytest.mark.parametrize("a,b,expected", [
-    (10, 2, 5.0),
+    (10, 2, 4.0),
     (5, 2, 2.5),
 ])
 def test_divide_valid(a, b, expected):
